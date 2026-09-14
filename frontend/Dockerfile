@@ -1,0 +1,1 @@
+FROM node:18-alpine AS build\n\nWORKDIR /app\n\nCOPY package*.json ./\nRUN npm ci\n\nCOPY . .\nRUN npm run build\n\nFROM nginx:alpine\n\nCOPY --from=build /app/dist /usr/share/nginx/html\n\nEXPOSE 80\n\nCMD [\"nginx\", \"-g\", \"daemon off;\"]\n
